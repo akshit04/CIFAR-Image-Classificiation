@@ -10,7 +10,7 @@ import time
 import tqdm
 import numpy as np
 from Network import ResNet
-from DataLoader import MyDataset
+from ImageUtils import MyDataset
 
 """This script defines the training, validation and testing process.
 """
