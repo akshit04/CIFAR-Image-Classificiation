@@ -126,8 +126,8 @@ class MyModel(object):
                 score, val_loss = self.evaluate(x_valid, y_valid)
                 print("score = {:.3f}% ({:.4f}) in validation set.\n".format(score*100, val_loss))
 
-                if ((_+1) % 10 == 0):
-                    self.save(acc=score, epoch=_+1)
+                if (True):
+                    # self.save(acc=score, epoch=_+1)
                     # score, val_loss = self.evaluate(x_valid, y_valid, _+1)
                     # print("score = {:.3f}% ({:.4f}) in validation set.\n".format(score*100, val_loss))
 
@@ -135,7 +135,7 @@ class MyModel(object):
                         best_score = score
                         best_epoch = _
                         print("Best score yet!")
-                        # self.save(acc=score, epoch=_)
+                        self.save(acc=score, epoch=_)
                     else:
                         print("best was {} epochs ago".format(_-best_epoch))
                 train_stats['val_loss'].append(val_loss)
@@ -185,14 +185,13 @@ class MyModel(object):
         path = os.path.abspath(self.configs['save_dir'])
         if not os.path.exists(path):
             os.mkdir(path)
-        torch.save(chkpt, os.path.join(path, self.configs['name'] + 'model-%d.ckpt'%(epoch)))
+        torch.save(chkpt, os.path.join(path, self.configs['name'] + '.ckpt'))
 
-    def load(self, checkpoint_num):
-        fn = os.path.join(self.configs['save_dir'], self.configs['name'] + 'model-%d.ckpt'%(checkpoint_num))
+    def load(self, checkpoint_num=0):
+        fn = os.path.join(self.configs['save_dir'], self.configs['name'] + '.ckpt')
         chkpt = torch.load(fn)
         print("Loading from file: ")
         configs = chkpt['configs']
-        print(configs)
         self.network = ResNet(configs['depth'])
         self.network.load_state_dict(chkpt['weights'])
         self.network.cuda()

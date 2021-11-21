@@ -28,22 +28,23 @@ if __name__ == '__main__':
 			w.writerow([key, val])
 
 		# SINGLE
-		# score,loss = model.evaluate(x_test, y_test)
-		# print("The test score is: {:.3f}% ({:.4f})".format(score*100, loss))
+		model.load()
+		score,loss = model.evaluate(x_test, y_test)
+		print("The test score is: {:.3f}% ({:.4f})".format(score*100, loss))
 
 		# MULTIPLE
-		checkpoint_num_list = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
-		for checkpoint_num in checkpoint_num_list:
-			model.load(checkpoint_num)
-			score,loss = model.evaluate(x_test, y_test)
-			print("The test score for Checkpoint {:d} is: {:.3f}% ({:.4f})".format(checkpoint_num, score*100, loss))
+		# checkpoint_num_list = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250]
+		# for checkpoint_num in checkpoint_num_list:
+			# model.load(checkpoint_num)
+			# score,loss = model.evaluate(x_test, y_test)
+			# print("The test score for Checkpoint {:d} is: {:.3f}% ({:.4f})".format(checkpoint_num, score*100, loss))
 		
 		# score,loss = model.evaluate(x_test, y_test)
 		# print("The test score is: {:.3f}% ({:.4f})".format(score*100, loss))
 
 	elif args.mode == 'test':
-		best_checkpoint = 160
-		model.load(best_checkpoint)
+		# best_checkpoint = 250
+		model.load()
 		# Testing on public testing dataset
 		_, _, x_test, y_test = load_data(args.data_dir)
 
@@ -52,8 +53,8 @@ if __name__ == '__main__':
 		print("The test score is: {:.3f}% ({:.4f})".format(score*100, loss))
 
 	elif args.mode == 'predict':
-		best_checkpoint = 160
-		model.load(best_checkpoint)
+		#best_checkpoint = 250
+		model.load()
 
 		# Predicting and storing results on private testing dataset 
 		x_test = load_testing_images(args.data_dir)

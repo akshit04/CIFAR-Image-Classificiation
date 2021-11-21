@@ -33,7 +33,7 @@ def load_data(data_dir):
             continue
         with open(os.path.join(data_dir,fn), 'rb') as fo:
             ds = pickle.load(fo, encoding='bytes')
-            xtemp = np.array(ds[b'data']) #.reshape(10000,3,32,32).transpose(0,2,3,1).astype(np.uint8)
+            xtemp = np.array(ds[b'data'])
             ytemp = np.array(ds[b'labels'])
 
         if fn.startswith("test"):
@@ -70,9 +70,9 @@ def train_valid_split(x_train, y_train, split_index=45000):
 def load_testing_images(file):
     data = np.load(file)
     print(data.shape)
-    data = torch.tensor(data.reshape(data.shape[0],3,32,32)/255, dtype=torch.float32)
-    # data = data.permute(0,3,1,2)
+    data = torch.tensor(data.reshape(data.shape[0],32,32,3)/255, dtype=torch.float32)
+    data = np.transpose(data, [0,3,1,2])
     print(data.shape)
     tf_norm = tf.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))
-    # data = tf_norm(data)
+    data = tf_norm(data)
     return data
